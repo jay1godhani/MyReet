@@ -15,18 +15,12 @@ namespace MyReet.Repository
 	{
 
 		private readonly ApplicationDbContext _db;
-		//private readonly UserManager<ApplicationUser> _userManager;
-		//private readonly RoleManager<IdentityRole> _roleManager;
 		private string secretKey;
-		//private readonly IMapper _mapper;
 
 		public UserRepository(ApplicationDbContext db, IConfiguration configuration, UserManager<ApplicationUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
 		{
 			_db = db;
-			//_mapper = mapper;
-			//_userManager = userManager;
 			secretKey = configuration.GetValue<string>("ApiSettings:Secret");
-			//_roleManager = roleManager;
 		}
 
 		public bool IsUniqueUser(string username)
@@ -43,7 +37,7 @@ namespace MyReet.Repository
 		{
 			var user = _db.LocalUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower() && u.Password == loginRequestDTO.Password);
 
-			//bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
+			
 
 
 			if (user == null)
@@ -57,9 +51,6 @@ namespace MyReet.Repository
 
 			}
 
-
-			//if user was found generate JWT Token
-			//var roles = await _userManager.GetRolesAsync(user);
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -101,29 +92,7 @@ namespace MyReet.Repository
 			user.Password = "";
 			return user;
 
-			//try
-			//{
-			//	var result = await _userManager.CreateAsync(user, registerationRequestDTO.Password);
-			//	if (result.Succeeded)
-			//	{
-			//		if (!_roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
-			//		{
-			//			await _roleManager.CreateAsync(new IdentityRole("admin"));
-			//			await _roleManager.CreateAsync(new IdentityRole("customer"));
-			//		}
-			//		await _userManager.AddToRoleAsync(user, "admin");
-			//		var userToReturn = _db.ApplicationUsers
-			//			.FirstOrDefault(u => u.UserName == registerationRequestDTO.UserName);
-			//		return _mapper.Map<UserDTO>(userToReturn);
-
-			//	}
-			//}
-			//catch (Exception e)
-			//{
-
-			//}
-
-			//return new UserDTO();
+			
 		}
 	}
 }

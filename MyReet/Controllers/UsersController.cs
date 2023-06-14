@@ -38,7 +38,7 @@ namespace MyReet.Controllers
 
 			return Ok(_response);
 		}
-		[Authorize]
+		
 		[HttpPost("register")]
 		public async Task<IActionResult> Register([FromBody] RegisterationRequestDTO model)
 		{
